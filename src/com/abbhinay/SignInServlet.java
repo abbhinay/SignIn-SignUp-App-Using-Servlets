@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,10 +35,13 @@ public class SignInServlet extends HttpServlet {
 			psmt.setString(2, mail);
 			psmt.setString(3, pass);
 			ResultSet a = psmt.executeQuery();
+			RequestDispatcher rd=null;
 			if(a.next()) {
 				out.println("you are logged in");
 			}else {
-				out.println("not logged in");
+				out.println("<h1> incorrect username or password </h1>");
+				rd=request.getRequestDispatcher("index.html");
+				rd.include(request, response);
 			}
 			con.close();
 		}catch(Exception e)
